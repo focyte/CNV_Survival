@@ -1,0 +1,98 @@
+### Load required packages
+library(survival)
+library(survminer)
+library(stringr)
+library(gridExtra)
+library(dplyr)
+library(data.table)
+library(tidyr)
+
+### create patient survival data frame with disease free survival (DFS) time and status
+# import clinical data as a table
+clinical<-read.table("data_clinical_patient.txt", header=T, sep="\t")
+
+# choose relevant columns for DFS survival analysis
+clinical_DFS<-data.frame(df$PATIENT_ID, df$DFS_STATUS, df$DFS_MONTHS)
+
+# new headers
+colnames(clinical_DFS)<-c("PATIENT_ID", "status", "time")
+
+# convert DFS_STATUS to staus 0/1 > Important for building the survival object
+clinical_DFS[clinical_DFS == "0:DiseaseFree"] <- "0"
+clinical_DFS[clinical_DFS == "1:Recurred/Progressed"] <- "1"
+
+# remove rows where data is missing (NA) > removes patients with insuffcient clinical data
+clinical_DFS<-clinical_DFS %>% drop_na()
+
+### Data handling
+# make list of patient ID and sample ID > needed becuase survival and CNA data use different identifiers
+ID<-read.table("data_clinical_sample.txt", header=T, sep="\t")
+df<-data.frame(ID)
+IDS<-data.frame(df$PATIENT_ID, df$SAMPLE_ID)
+colnames(IDS)<-c("PATIENT_ID", "SAMPLE_ID")
+
+### Copy Number Analysis (CNA) data
+# import CNA data as a table
+CNA<-read.table("data_CNA.txt", header=F, sep="\t")
+df2<-data.frame(CNA)
+
+# convert to dataframe and transpose
+df_t <- transpose(df2)
+
+# rename the headers using the gene names
+names(df_t) <- as.matrix(df_t[1, ])
+df_t <- df_t[-1, ]
+df_t <- df_t[-1, ]
+
+### Merge CNA and Survival
+names(df_t)[names(df_t) == 'Hugo_Symbol'] <- 'SAMPLE_ID'
+CNV_patients<-merge(df_t, IDS, by="SAMPLE_ID")
+CNV_clinical<-merge(CNV_patients, clinical_DFS, by="PATIENT_ID")
+
+### Run a test using one gene
+#set your gene of interest
+gene = CNV_clinical$CDKN2A
+test<-data.frame(CNV_clinical$PATIENT_ID, gene, CNV_clinical$time, CNV_clinical$status)
+
+# new headers
+colnames(test)<-c("PATIENT_ID", "gene", "time", "status")
+test <- transform(
+  test,gene = as.numeric(gene))
+test <- transform(
+  test,status = as.numeric(status))
+
+test$gene[test$gene == "0"] <- "Diploid"
+test$gene[test$gene == "1"] <- "Gain"
+test$gene[test$gene == "-1"] <- "Shallow Loss"
+test$gene[test$gene == "-2"] <- "Loss Deep"
+
+### Suvrvival Object
+# create a survival object out of the test data
+surv_object <- Surv(time = test$time, event = test$status)
+
+
+### coxph analysis
+# fit a coxph analysis to the data
+fit.coxph <- coxph(surv_object ~ gene, 
+                   data = test)
+
+# summarise the results
+summary(fit.coxph)
+
+# generate a Forest plot of the coxph analysis
+ggforest(fit.coxph, data = test)
+
+### KM Plot
+# Fit survival data using the Kaplan-Meier method
+fit1 <- survfit(surv_object ~ gene, data = test)
+
+# Plot the KM plots
+ggsurvplot(fit1, data = test, 
+           pval = TRUE, 
+           conf.int = TRUE,
+           risk.table.col = "strata",
+           ggtheme = theme_bw() ,
+           pval.method=TRUE,  
+           risk.table = TRUE, 
+           palette = "jco", 
+           tables.theme = theme_cleantable())
