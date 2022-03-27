@@ -61,10 +61,11 @@ test <- transform(
 test <- transform(
   test,status = as.numeric(status))
 
+# create gene copy number groups
 test$gene[test$gene == "0"] <- "Diploid"
 test$gene[test$gene == "1"] <- "Gain"
-test$gene[test$gene == "-1"] <- "Shallow Loss"
-test$gene[test$gene == "-2"] <- "Loss Deep"
+test$gene[test$gene == "-1"] <- "Loss - Shallow"
+test$gene[test$gene == "-2"] <- "Loss - Deep"
 
 ### Suvrvival Object
 # create a survival object out of the test data
