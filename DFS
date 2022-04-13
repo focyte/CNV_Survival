@@ -9,7 +9,7 @@ library(tidyr)
 
 ### create patient survival data frame with disease free survival (DFS) time and status
 # import clinical data as a table
-clinical<-read.table("data_clinical_patient.txt", header=T, sep="\t")
+df<-read.table("data_clinical_patient.txt", header=T, sep="\t")
 
 # choose relevant columns for DFS survival analysis
 clinical_DFS<-data.frame(df$PATIENT_ID, df$DFS_STATUS, df$DFS_MONTHS)
