@@ -33,7 +33,7 @@ colnames(IDS)<-c("PATIENT_ID", "SAMPLE_ID")
 
 ### Copy Number Analysis (CNA) data
 # import CNA data as a table
-CNA<-read.table("data_CNA.txt", header=F, sep="\t")
+CNA<-read.table("data_cna.txt", header=F, sep="\t")
 df2<-data.frame(CNA)
 
 # convert to dataframe and transpose
@@ -51,7 +51,7 @@ CNV_clinical<-merge(CNV_patients, clinical_DFS, by="PATIENT_ID")
 
 ### Run a test using one gene
 #set your gene of interest
-gene = CNV_clinical$CDKN2A
+gene = CNV_clinical$PTEN
 test<-data.frame(CNV_clinical$PATIENT_ID, gene, CNV_clinical$time, CNV_clinical$status)
 
 # new headers
@@ -62,10 +62,10 @@ test <- transform(
   test,status = as.numeric(status))
 
 # create gene copy number groups
-test$gene[test$gene == "0"] <- "Diploid"
-test$gene[test$gene == "1"] <- "Gain"
-test$gene[test$gene == "-1"] <- "Loss - Shallow"
-test$gene[test$gene == "-2"] <- "Loss - Deep"
+test$gene[test$gene == "0"] <- "1.Diploid"
+test$gene[test$gene == "1"] <- "4.Gain"
+test$gene[test$gene == "-1"] <- "2.Loss - Shallow"
+test$gene[test$gene == "-2"] <- "3.Loss - Deep"
 
 ### Suvrvival Object
 # create a survival object out of the test data
