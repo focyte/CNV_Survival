@@ -1,3 +1,6 @@
+# John @ Focyte created 22/04/2022 v.1.2
+# Script performs a comparison of mean PSI for slected splicing event in Normal vs Tumour samples from TCGA splice-seq data
+
 ### Load required packages
 library(survival)
 library(survminer)
@@ -89,11 +92,16 @@ fit1 <- survfit(surv_object ~ gene, data = test)
 
 # Plot the KM plots
 ggsurvplot(fit1, data = test, 
+           title = "Effect of PTEN CNV on DFS in Prostate Cancer",
            pval = TRUE, 
            conf.int = TRUE,
            risk.table.col = "strata",
+           legend = "right",
+           legend.title = "PTEN CNV",
+           legend.labs = c("Diploid", "Shallow Loss", "Deep Loss", "Gain"),
            ggtheme = theme_bw() ,
-           pval.method=TRUE,  
-           risk.table = TRUE, 
+           axes.offset = TRUE,
+           pval.method = TRUE,  
+           risk.table = TRUE,
            palette = "jco", 
            tables.theme = theme_cleantable())
