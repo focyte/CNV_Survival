@@ -16,4 +16,4 @@ The tumour supressor gene PTEN is one of the most commonly lost genes in prostat
 
 The example uses TCGA-PRAD (PanCancer Atlas: Prostate Cancer data from c-bioportal)
 
-![PTEN_Prostate](https://user-images.githubusercontent.com/18528125/173326883-d38594b8-9ef1-4f4a-9aa3-4712eb550af6.png)
+![PTEN PC](https://user-images.githubusercontent.com/18528125/173332063-d6286cc4-9c33-4bf9-8e85-5e4e40c49435.png)
