@@ -17,9 +17,3 @@ The tumour supressor gene PTEN is one of the most commonly lost genes in prostat
 The example uses TCGA-PRAD (PanCancer Atlas: Prostate Cancer data from c-bioportal)
 
 ![PTEN_Prostate](https://user-images.githubusercontent.com/18528125/173326883-d38594b8-9ef1-4f4a-9aa3-4712eb550af6.png)
-
-## CCT3 loss in Lung Squamous Cell Carcinoma
-
-The tumour supressor gene PTEN is one of the most commonly lost genes in prostate cancer. Here the "DFS" script determines if loss of PTEN copy number is able to estimate if a patient with prostate cancer is likely to progress with their disease. This progression is measured by DFS as the event.
-
-The example uses TCGA-LUSC (PanCancer Atlas: Lung Squamous Cell Carcinoma data from c-bioportal)
