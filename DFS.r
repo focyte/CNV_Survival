@@ -1,5 +1,8 @@
-# John @ Focyte created 22/04/2022 v.1.2
-# Script performs a comparison of mean PSI for slected splicing event in Normal vs Tumour samples from TCGA splice-seq data
+# Author: John @ Focyte
+# Created: 22/04/2022
+# Version: 1.3
+# Description: This script performs survival analysis based on copy number estimation for a specified gene.
+#              It organizes patients into groups and generates Kaplan-Meier plots and Cox proportional hazards model results.
 
 ### Load required packages
 library(survival)
