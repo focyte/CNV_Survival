@@ -1,14 +1,25 @@
-# TCGA_Survival
+# TCGA Survival Analysis Script
 
-The Kaplan Meier estimate is an important methodology in disease research. It is used to estimate the probability that a patient will undergo a defined clinical event. In these two examples, the events are Overall Survival (for lung cancer) and Disease Free Survival (for prostate cancer). The lung and prostate cancer patients are grouped by the number of copies of the genes CCT3 and PTEN that they express; measured as copy number alteration (CNA).
+The TCGA Survival script utilizes the Kaplan-Meier estimate, a crucial methodology in disease research, to estimate the probability of patients undergoing defined clinical events. Specifically, it focuses on Overall Survival for lung cancer and Disease-Free Survival for prostate cancer.
 
-To run these scripts you need to download the following files for your cancer of choice from https://www.cbioportal.org/ and place in your working directory:
+## Gene-Specific Analysis
 
-data_clinical_patient.txt > contains the survival information for patients
-data_clinical_sample.txt  > you want to work with patient rather than sample level information, however the CNA data works with sample level identifiers                               and this file is needed to convert between the two
-data_cna.txt              > measurements of CNA for each gene in each sample
+The script categorizes cancer patients based on the copy number alteration (CNA) of your gene of interest.The expression levels of these genes, measured through CNA, serve as key factors in patient grouping.
 
-Currently, the scripts do not use a configuration file, therefore you will need to change all instances of the example genes to your favourite gene. This can be done easily with the find and replace all option in RStudio.
+In the example below the genes CCT3 and PTEN are analysed in the context of Lung and Prostate cancers respectively.
+
+## Requirements
+
+Before running the script, ensure you download the necessary data files for your chosen cancer type from [cBioPortal](https://www.cbioportal.org/) and place them in your working directory:
+
+- **data_clinical_patient.txt:** Contains survival information for patients.
+- **data_clinical_sample.txt:** Provides patient-level information, crucial for CNA data processing.
+
+## How to Use
+
+1. Download the required data files mentioned above.
+2. Set your working directory.
+3. Run the function within the script to perform survival analysis on the specified cancer type, considering gene-specific copy number alterations of your gene of interest.
 
 ## PTEN loss in Prostate Cancer
 
